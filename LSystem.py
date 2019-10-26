@@ -68,6 +68,8 @@ class LSystem():
             for char in sentence:
                 if char == "F" or char == "G":
                     self.turtle.forward(self.line_len)
+                elif char == "L":
+                    self.turtle.forward(self.line_len / 2)
                 elif char == '+':
                     self.turtle.right(self.angle)
                 elif char == '-':
