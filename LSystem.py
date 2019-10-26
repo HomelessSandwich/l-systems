@@ -13,7 +13,7 @@ class LSystem():
             axiom | string | The string that starts the L-system generation.
 
             rules | array of dicts | An array of dicts that contain the rules
-            needed to transform sentances. Dicts must be in the form:
+            needed to transform sentences. Dicts must be in the form:
                 {
                     "a": "F",
                     "b": "FF"
@@ -48,30 +48,71 @@ class LSystem():
         self.iterations = iterations
         self.line_len = line_len
         self.screen_size = screen_size
+        self.turtle = turtle
 
-    def gen_sentance(self, sentance):
+    def generate(self):
         '''
-        Generates a new sentance based of an input sentance and its rules.
+        Main function that draws all instructions from the rules set for the number
+        of iterations inputted.
+        '''
+        sentence = self.axiom
+
+        for i in range(self.iterations):
+            self.reset_turtle()
+            self.turtle.tracer(0, 0)  # Stops the turtle from updating
+
+            for char in sentence:
+                if char == "F":
+                    self.turtle.forward(self.length)
+                elif char == '+':
+                    self.turtle.right(self.angle)
+                elif char == '-':
+                    self.turtle.left(self.angle)
+
+            sentence = self.gen_sentence(sentence)
+            self.turtle.update()
+            time.sleep(1)  # Allows to see the generated image for long enough
+
+    def gen_sentence(self, sentence):
+        '''
+        Generates a new sentence based of an input sentence and its rules.
 
         Inputs:
-            sentance | string | The L-system string to be transformed.
+            sentence | string | The L-system string to be transformed.
         '''
 
-        next_sentance = ""
+        next_sentence = ""
 
-        for c in sentance:
+        for c in sentence:
             found = False
 
             try:
                 for rule in self.rules:
                     if c == rule["a"]:
-                        next_sentance += rule["b"]
+                        next_sentence += rule["b"]
                         found = True
                         break
             except KeyError:
                 print('One of the rules did not contain a key of "a" or "b"')
 
             if not found:
-                next_sentance += c
+                next_sentence += c
 
-        return next_sentance
+        return next_sentence
+
+    def screen_setup(self):
+        '''
+        Sets up the turtle to its inital settings.
+        '''
+        self.turtle.screensize(self.screen_size, self.screen_size)
+        self.turtle.setworldcoordinates(0, 0, self.screen_size / 2, self.screen_size / 2)
+
+    def reset_turtle(self):
+        '''
+        Resets the turtle so it can draw another iteration.
+        '''
+        self.turtle.penup()
+        self.turtle.setpos(self.start_pos)
+        self.turtle.pendown()
+        self.turtle.setheading(self.start_ang)
+        self.turtle.clear()
