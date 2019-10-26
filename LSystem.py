@@ -56,6 +56,9 @@ class LSystem():
         of iterations inputted.
         '''
         sentence = self.axiom
+        pos_stack = []
+        angle_stack = []
+
         self.screen_setup()
 
         for i in range(self.iterations):
@@ -69,6 +72,16 @@ class LSystem():
                     self.turtle.right(self.angle)
                 elif char == '-':
                     self.turtle.left(self.angle)
+                elif char == "[":
+                    pos_stack.append(self.turtle.pos())
+                    angle_stack.append(self.turtle.heading())
+                    self.turtle.left(self.angle)
+                elif char == "]":
+                    self.turtle.penup()
+                    self.turtle.setpos(pos_stack.pop())
+                    self.turtle.setheading(angle_stack.pop())
+                    self.turtle.pendown()
+                    self.turtle.right(self.angle)
 
             sentence = self.gen_sentence(sentence)
             self.turtle.update()
