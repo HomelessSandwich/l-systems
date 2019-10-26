@@ -56,6 +56,7 @@ class LSystem():
         of iterations inputted.
         '''
         sentence = self.axiom
+        self.screen_setup()
 
         for i in range(self.iterations):
             self.reset_turtle()
@@ -63,7 +64,7 @@ class LSystem():
 
             for char in sentence:
                 if char == "F":
-                    self.turtle.forward(self.length)
+                    self.turtle.forward(self.line_len)
                 elif char == '+':
                     self.turtle.right(self.angle)
                 elif char == '-':
@@ -71,7 +72,11 @@ class LSystem():
 
             sentence = self.gen_sentence(sentence)
             self.turtle.update()
-            time.sleep(1)  # Allows to see the generated image for long enough
+
+            if i != self.iterations - 1:
+                time.sleep(1)  # Allows to see the generated image for long enough
+            else:
+                time.sleep(10)
 
     def gen_sentence(self, sentence):
         '''
@@ -105,7 +110,8 @@ class LSystem():
         Sets up the turtle to its inital settings.
         '''
         self.turtle.screensize(self.screen_size, self.screen_size)
-        self.turtle.setworldcoordinates(0, 0, self.screen_size / 2, self.screen_size / 2)
+        self.turtle.setworldcoordinates(0, 0, self.screen_size, self.screen_size)
+        self.turtle.hideturtle()
 
     def reset_turtle(self):
         '''
