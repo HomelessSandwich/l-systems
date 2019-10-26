@@ -21,7 +21,7 @@ system = LSystem(
     angle=15,
     start_pos=(750, 0),
     start_ang=130,
-    iterations=9,
+    iterations=12,
     line_len=2,
     screen_size=2500
 )
