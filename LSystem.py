@@ -63,7 +63,7 @@ class LSystem():
             self.turtle.tracer(0, 0)  # Stops the turtle from updating
 
             for char in sentence:
-                if char == "F":
+                if char == "F" or char == "G":
                     self.turtle.forward(self.line_len)
                 elif char == '+':
                     self.turtle.right(self.angle)
